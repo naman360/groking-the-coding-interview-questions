@@ -20,6 +20,8 @@ Input: String="oidbcaf", Pattern="abc"
 Output: true
 Explanation: The string contains "bca" which is a permutation of the given pattern.
 */
+
+// Comments same as string-anagrams.cpp
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -30,7 +32,6 @@ bool permutation(string s, string p)
     for (int i = 0; i < p.size(); i++)
     {
         mp[p[i]]++;
-        // cout << p[i] << " ";
     }
 
     bool ans = false;
@@ -40,16 +41,18 @@ bool permutation(string s, string p)
         if (mp.find(s[i]) != mp.end())
         {
             mp[s[i]]--;
-            matched++; // find out how many elements which are in p are matched with the characters in string s
+            if (mp[s[i]] == 0)
+                matched++;
         }
-        if (matched == p.size())
+        if (matched == mp.size())
             return true;
-        if (i - j + 1 >= p.size()) // if window size > pattern size we need to shrink window and decrement matched and increase freq of selected character if it is in the map (= is for ensuring that window length does not exceeds p length)
+        if (i - j + 1 >= p.size())
         {
             if (mp.find(s[j]) != mp.end())
             {
-                matched--;
                 mp[s[j]]++;
+                if (mp[s[j]] == 1)
+                    matched--;
             }
             j++;
         }
@@ -58,8 +61,8 @@ bool permutation(string s, string p)
 }
 int main()
 {
-    string s = "bcdxabcdy";
-    string p = "bcdyabcdx";
+    string s = "ppmqmp";
+    string p = "pmq";
     cout << permutation(s, p);
     return 0;
 }
